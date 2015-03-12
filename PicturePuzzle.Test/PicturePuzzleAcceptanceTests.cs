@@ -24,6 +24,7 @@ namespace PicturePuzzle.Test
         }
 
         [TestCase("18 18", "111111111111111111")]
+        [TestCase("9 6", "")]
         public void Level_1(string input, string expected)
         {
             var cols = int.Parse(input.Split(BLANK)[0]);
