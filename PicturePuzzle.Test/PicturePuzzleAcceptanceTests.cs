@@ -40,6 +40,7 @@ namespace PicturePuzzle.Test
         }
 
         [TestCase("5 2 1 2", "???1?")]
+        [TestCase("5 2 2 2", "11011")]
         public void Level_2_spec_examples(string input, string expected)
         {
             var args = input.Split(BLANK).ToList();
