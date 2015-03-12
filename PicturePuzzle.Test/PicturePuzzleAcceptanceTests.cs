@@ -86,9 +86,10 @@ namespace PicturePuzzle.Test
             }
             else
             {
+                // Handle white cells
                 var intersection = allCells.Aggregate((prevCells, nextCells) => prevCells.Intersect(nextCells).ToList());
                 var picture = CreatePicture(cols, intersection);
-                return picture.Replace('?', '0');
+                return picture.Replace(AMBIGUOUS, WHITE);
             }
         }
 
