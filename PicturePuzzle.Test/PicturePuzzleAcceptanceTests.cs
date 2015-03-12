@@ -76,7 +76,7 @@ namespace PicturePuzzle.Test
             Assert.That(actual, Is.EqualTo(expected), "cells");
         }
 
-        [TestCase("10 2 1 5 2 4", "?1111?2-22?")]
+        [TestCase("10 2 1 5 2 4", "?1111?222?")]
         public void Level_3_spec_examples(string input, string expected)
         {
             var args = input.Split(BLANK).ToList();
