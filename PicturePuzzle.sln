@@ -5,6 +5,8 @@ VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PicturePuzzle", "PicturePuzzle\PicturePuzzle.csproj", "{4F5ABC77-2931-44E8-8C0F-5F442D7A479F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PicturePuzzle.Test", "PicturePuzzle.Test\PicturePuzzle.Test.csproj", "{B9FFCD1C-DAC3-4FE8-8D20-599E6B0F121E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{4F5ABC77-2931-44E8-8C0F-5F442D7A479F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4F5ABC77-2931-44E8-8C0F-5F442D7A479F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4F5ABC77-2931-44E8-8C0F-5F442D7A479F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B9FFCD1C-DAC3-4FE8-8D20-599E6B0F121E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B9FFCD1C-DAC3-4FE8-8D20-599E6B0F121E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B9FFCD1C-DAC3-4FE8-8D20-599E6B0F121E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B9FFCD1C-DAC3-4FE8-8D20-599E6B0F121E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
