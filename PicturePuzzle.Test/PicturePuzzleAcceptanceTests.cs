@@ -11,8 +11,10 @@ namespace PicturePuzzle.Test
     public class PicturePuzzleAcceptanceTests
     {
         private const char BLANK = ' ';
+        private const string WHITE = "0";
         private const string BLACK = "1";
         private const string AMBIGUOUS = "?";
+        private const int WHITE_CELL = -12345;
 
         [TestCase("5 3", "??1??")]
         [TestCase("5 4", "?111?")]
@@ -49,6 +51,49 @@ namespace PicturePuzzle.Test
             for (var i = 0; i < blocks; i++)
                 blockLengths.Add(int.Parse(args[i + 2]));
 
+            var actual = FillCells(cols, blockLengths);
+            Assert.That(actual, Is.EqualTo(expected), "cells");
+        }
+
+        private string FillCells(int cols, List<int> blockLengths)
+        {
+            var allCells = new List<List<int>>();
+
+            for (var i = 0; i < cols; i++)
+            {
+                var cells = new List<int>();
+                var tmpIndex = i;
+
+                if (tmpIndex + NecessaryLength(blockLengths) > cols)
+                    break;
+
+                foreach (var bl in blockLengths)
+                {
+                    for (var j = tmpIndex; j < (bl + tmpIndex); j++)
+                        cells.Add(j);
+
+                    tmpIndex += 2; // White Cell
+                }
+
+                allCells.Add(cells);
+            }
+
+            var intersection = allCells.Aggregate((prevCells, nextCells) => prevCells.Intersect(nextCells).ToList());
+
+            var picture = CreatePicture(cols, intersection);
+
+            return picture;
+        }
+
+        private int NecessaryLength(IEnumerable<int> blockLengths)
+        {
+            var space = 0;
+            foreach (var bl in blockLengths)
+            {
+                space += bl;
+                space++; // White cell;
+            }
+            return space - 1; // Last white cell not necessary
         }
 
         private string FillCells(int cols, int blockLength)
