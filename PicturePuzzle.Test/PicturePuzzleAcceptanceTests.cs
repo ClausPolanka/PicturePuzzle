@@ -11,6 +11,7 @@ namespace PicturePuzzle.Test
     public class PicturePuzzleAcceptanceTests
     {
         private const char BLANK = ' ';
+        private const string BLACK = "1";
 
         [TestCase("5 3", "??1??")]
         public void Level_1_spec_examples(string input, string expected)
@@ -23,8 +24,36 @@ namespace PicturePuzzle.Test
 
         private string FillCells(int cols, int blockLength)
         {
-            
-            return string.Empty;
+            var allCells = new List<List<int>>();
+            for (var i = 0; i < cols; i++)
+            {
+                if (blockLength > cols)
+                {
+                    break;
+                }
+                var cells = new List<int>();
+                for (var j = i; j < blockLength; j++)
+                {
+                    cells.Add(j);
+                }
+                blockLength++;
+                allCells.Add(cells);
+            }
+            var intersection = allCells.Aggregate((prevCells, nextCells) => prevCells.Intersect(nextCells).ToList());
+
+            var picture = "";
+            for (int i = 0; i < cols; i++)
+            {
+                picture += "?";
+            }
+
+            foreach (var i in intersection)
+            {
+                picture = picture.Remove(i, 1);
+                picture = picture.Insert(i, BLACK);
+            }
+
+            return picture;
         }
     }
 }
