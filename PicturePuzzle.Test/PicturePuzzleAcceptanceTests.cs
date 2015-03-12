@@ -14,7 +14,7 @@ namespace PicturePuzzle.Test
         private const string BLACK = "1";
 
         [TestCase("5 3", "??1??")]
-        [TestCase("5 4", "")]
+        [TestCase("5 4", "?111?")]
         public void Level_1_spec_examples(string input, string expected)
         {
             var cols = int.Parse(input.Split(BLANK)[0]);
