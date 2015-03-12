@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
 using NUnit.Framework;
@@ -75,6 +76,59 @@ namespace PicturePuzzle.Test
             Assert.That(actual, Is.EqualTo(expected), "cells");
         }
 
+        [TestCase("10 2 1 5 2 4", "?1111?2-22?")]
+        public void Level_3_spec_examples(string input, string expected)
+        {
+            var args = input.Split(BLANK).ToList();
+            var cols = int.Parse(args[0]);
+            var nrBlocks = int.Parse(args[1]);
+
+            var blocks = new List<Block>();
+
+            for (var i = 0; i <= nrBlocks; i += 2)
+                blocks.Add(new Block { Color = int.Parse(args[i + 2]), Length = int.Parse(args[i + 3]) });
+
+            var actual = FillCells(cols, blocks);
+            Assert.That(actual, Is.EqualTo(expected), "cells");
+        }
+
+        private string FillCells(int cols, List<Block> blocks)
+        {
+            if (blocks.Count == 0)
+                return CreateWhitePicture(cols);
+
+            var allCells = new List<List<Cell>>();
+
+            for (var i = 0; i < cols; i++)
+            {
+                var cells = new List<Cell>();
+                var tmpIndex = i;
+
+                if (tmpIndex + NecessaryLength(blocks) > cols)
+                    break;
+
+                var lastColor = -1;
+                foreach (var bl in blocks)
+                {
+                    if (lastColor == bl.Color)
+                        tmpIndex += 1;
+
+                    for (var j = tmpIndex; j < (bl.Length + tmpIndex); j++)
+                        cells.Add(new Cell(index: j, color: bl.Color));
+
+                    tmpIndex += bl.Length;
+                    lastColor = bl.Color;
+                }
+
+                allCells.Add(cells);
+            }
+
+            var intersection = allCells.Aggregate((prevCells, nextCells) => prevCells.Intersect(nextCells).ToList());
+            var picture = CreatePicture(cols, intersection);
+
+            return allCells.Count > 1 ? picture : picture.Replace(AMBIGUOUS, WHITE);
+        }
+
         private string FillCells(int cols, List<int> blockLengths)
         {
             if (blockLengths.Count == 0)
@@ -117,6 +171,21 @@ namespace PicturePuzzle.Test
             return cells;
         }
 
+        private int NecessaryLength(IEnumerable<Block> blocks)
+        {
+            var space = 0;
+            var lastColor = -1;
+            foreach (var bl in blocks)
+            {
+                if (lastColor == bl.Color)
+                    space++;
+
+                space += bl.Length;
+                lastColor = bl.Color;
+            }
+            return space; // Last white cell not necessary
+        }
+
         private int NecessaryLength(IEnumerable<int> blockLengths)
         {
             var space = 0;
@@ -153,6 +222,24 @@ namespace PicturePuzzle.Test
             return picture;
         }
 
+        private static string CreatePicture(int cols, List<Cell> cells)
+        {
+            var picture = "";
+
+            for (var i = 0; i < cols; i++)
+            {
+                picture += AMBIGUOUS;
+            }
+
+            foreach (var c in cells)
+            {
+                picture = picture.Remove(c.Index, 1);
+                picture = picture.Insert(c.Index, c.Color.ToString());
+            }
+
+            return picture;
+        }
+
         private static string CreatePicture(int cols, IEnumerable<int> intersection)
         {
             var picture = "";
@@ -168,5 +255,54 @@ namespace PicturePuzzle.Test
 
             return picture;
         }
+    }
+
+    public class Cell
+    {
+        private readonly int index;
+        private readonly int color;
+
+        public Cell(int index, int color)
+        {
+            this.index = index;
+            this.color = color;
+        }
+
+        public int Index
+        {
+            get { return index; }
+        }
+
+        public int Color
+        {
+            get { return color; }
+        }
+
+        protected bool Equals(Cell other)
+        {
+            return index == other.index && color == other.color;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((Cell) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                return (index*397) ^ color;
+            }
+        }
+    }
+
+    public struct Block
+    {
+        public int Length { get; set; }
+        public int Color { get; set; }
     }
 }
