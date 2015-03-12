@@ -23,7 +23,7 @@ namespace PicturePuzzle.Test
             Assert.That(actual, Is.EqualTo(expected), "cells");
         }
 
-        [TestCase("18 18", "")]
+        [TestCase("18 18", "111111111111111111")]
         public void Level_1(string input, string expected)
         {
             var cols = int.Parse(input.Split(BLANK)[0]);
