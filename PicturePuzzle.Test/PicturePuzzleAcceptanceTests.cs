@@ -23,6 +23,17 @@ namespace PicturePuzzle.Test
             Assert.That(actual, Is.EqualTo(expected), "cells");
         }
 
+        [TestCase("18 18", "")]
+        public void Level_1(string input, string expected)
+        {
+            var cols = int.Parse(input.Split(BLANK)[0]);
+            var blockLength = int.Parse(input.Split(BLANK)[1]);
+            var actual = FillCells(cols, blockLength);
+            Assert.That(actual, Is.EqualTo(expected), "cells");
+        }
+
+
+
         private string FillCells(int cols, int blockLength)
         {
             var allCells = new List<List<int>>();
