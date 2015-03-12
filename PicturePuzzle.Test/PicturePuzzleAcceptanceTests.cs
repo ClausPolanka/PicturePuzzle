@@ -58,7 +58,7 @@ namespace PicturePuzzle.Test
 
         [TestCase("10 2 5 4", "1111101111")]
         [TestCase("10 2 5 3", "?1111??11?")]
-        //[TestCase("30 0", "000000000000000000000000000000")]
+        [TestCase("30 0", "000000000000000000000000000000")]
         [TestCase("40 4 11 10 5 7", "????1111111?????111111?????1?????111????")]
         public void Level_2(string input, string expected)
         {
@@ -77,6 +77,9 @@ namespace PicturePuzzle.Test
 
         private string FillCells(int cols, List<int> blockLengths)
         {
+            if (blockLengths.Count == 0)
+                return CreateWhitePicture(cols);
+
             var allCells = new List<List<int>>();
 
             for (var i = 0; i < cols; i++)
@@ -98,18 +101,20 @@ namespace PicturePuzzle.Test
                 allCells.Add(cells);
             }
 
-            if (allCells.Count > 1)
-            {
-                var intersection = allCells.Aggregate((prevCells, nextCells) => prevCells.Intersect(nextCells).ToList());
-                return CreatePicture(cols, intersection);
-            }
-            else
-            {
-                // Handle white cells
-                var intersection = allCells.Aggregate((prevCells, nextCells) => prevCells.Intersect(nextCells).ToList());
-                var picture = CreatePicture(cols, intersection);
-                return picture.Replace(AMBIGUOUS, WHITE);
-            }
+            var intersection = allCells.Aggregate((prevCells, nextCells) => prevCells.Intersect(nextCells).ToList());
+            var picture = CreatePicture(cols, intersection);
+
+            return allCells.Count > 1 ? picture : picture.Replace(AMBIGUOUS, WHITE);
+        }
+
+        private static string CreateWhitePicture(int cols)
+        {
+            var cells = "";
+
+            for (var i = 0; i < cols; i++)
+                cells += WHITE;
+
+            return cells;
         }
 
         private int NecessaryLength(IEnumerable<int> blockLengths)
