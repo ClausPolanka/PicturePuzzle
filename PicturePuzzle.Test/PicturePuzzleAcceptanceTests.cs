@@ -12,7 +12,7 @@ namespace PicturePuzzle.Test
     {
         private const char BLANK = ' ';
 
-        [TestCase("5 4", "??1??")]
+        [TestCase("5 3", "??1??")]
         public void Level_1_spec_examples(string input, string expected)
         {
             var cols = input.Split(BLANK)[0];
