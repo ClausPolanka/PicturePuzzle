@@ -80,17 +80,18 @@ namespace PicturePuzzle.Test
         [TestCase("10 2 1 5 2 3", "??111??2??")]
         [TestCase("12 3 1 4 2 3 3 1", "????????????")]
         [TestCase("8 2 2 4 2 3", "22220222")]
-        [TestCase("50 6 1 5 2 3 3 10 2 8 2 9 1 9", "")]
+        [TestCase("50 6 1 5 2 3 3 10 2 8 2 9 1 9", "?????????????33333?????222??????2222?????1111?????")]
         public void Level_3_spec_examples(string input, string expected)
         {
             var args = input.Split(BLANK).ToList();
             var cols = int.Parse(args[0]);
             var nrBlocks = int.Parse(args[1]);
 
+            var blockParts = args.Skip(2).ToList();
             var blocks = new List<Block>();
 
-            for (var i = 0; i <= nrBlocks; i += 2)
-                blocks.Add(new Block { Color = int.Parse(args[i + 2]), Length = int.Parse(args[i + 3]) });
+            for (var i = 0; i < blockParts.Count; i += 2)
+                blocks.Add(new Block { Color = int.Parse(blockParts[i]), Length = int.Parse(blockParts[i + 1]) });
 
             var actual = FillCells(cols, blocks);
             Assert.That(actual, Is.EqualTo(expected), "cells");
@@ -231,9 +232,7 @@ namespace PicturePuzzle.Test
             var picture = "";
 
             for (var i = 0; i < cols; i++)
-            {
                 picture += AMBIGUOUS;
-            }
 
             foreach (var c in cells)
             {
