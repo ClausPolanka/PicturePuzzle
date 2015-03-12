@@ -37,20 +37,34 @@ namespace PicturePuzzle.Test
             Assert.That(actual, Is.EqualTo(expected), "cells");
         }
 
+        [TestCase("5 2 1 2", "???1?")]
+        public void Level_2_spec_examples(string input, string expected)
+        {
+            var args = input.Split(BLANK).ToList();
+            var cols = int.Parse(args[0]);
+            var blocks = int.Parse(args[1]);
+
+            var blockLengths = new List<int>();
+
+            for (var i = 0; i < blocks; i++)
+                blockLengths.Add(int.Parse(args[i + 2]));
+
+        }
+
         private string FillCells(int cols, int blockLength)
         {
             var allCells = new List<List<int>>();
-            
+
             for (var i = 0; i < cols; i++)
             {
                 if (blockLength > cols)
                     break;
 
                 var cells = new List<int>();
-                
+
                 for (var j = i; j < blockLength; j++)
                     cells.Add(j);
-                
+
                 blockLength++;
                 allCells.Add(cells);
             }
