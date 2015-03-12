@@ -15,14 +15,15 @@ namespace PicturePuzzle.Test
         [TestCase("5 3", "??1??")]
         public void Level_1_spec_examples(string input, string expected)
         {
-            var cols = input.Split(BLANK)[0];
-            var blockLength = input.Split(BLANK)[1];
+            var cols = int.Parse(input.Split(BLANK)[0]);
+            var blockLength = int.Parse(input.Split(BLANK)[1]);
             var actual = FillCells(cols, blockLength);
             Assert.That(actual, Is.EqualTo(expected), "cells");
         }
 
-        private string FillCells(string cols, string blockLength)
+        private string FillCells(int cols, int blockLength)
         {
+            
             return string.Empty;
         }
     }
