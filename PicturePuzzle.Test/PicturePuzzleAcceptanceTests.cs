@@ -73,17 +73,23 @@ namespace PicturePuzzle.Test
                     for (var j = tmpIndex; j < (bl + tmpIndex); j++)
                         cells.Add(j);
 
-                    tmpIndex += 2; // White Cell
+                    tmpIndex += bl + 1; // White Cell
                 }
 
                 allCells.Add(cells);
             }
 
-            var intersection = allCells.Aggregate((prevCells, nextCells) => prevCells.Intersect(nextCells).ToList());
-
-            var picture = CreatePicture(cols, intersection);
-
-            return picture;
+            if (allCells.Count > 1)
+            {
+                var intersection = allCells.Aggregate((prevCells, nextCells) => prevCells.Intersect(nextCells).ToList());
+                return CreatePicture(cols, intersection);
+            }
+            else
+            {
+                var intersection = allCells.Aggregate((prevCells, nextCells) => prevCells.Intersect(nextCells).ToList());
+                var picture = CreatePicture(cols, intersection);
+                return picture.Replace('?', '0');
+            }
         }
 
         private int NecessaryLength(IEnumerable<int> blockLengths)
