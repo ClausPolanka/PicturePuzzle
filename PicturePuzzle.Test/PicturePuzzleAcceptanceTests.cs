@@ -57,7 +57,8 @@ namespace PicturePuzzle.Test
         }
 
         [TestCase("10 2 5 4", "1111101111")]
-        [TestCase("10 2 5 3", "")]
+        [TestCase("10 2 5 3", "?1111??11?")]
+        //[TestCase("30 0", "")]
         public void Level_2(string input, string expected)
         {
             var args = input.Split(BLANK).ToList();
